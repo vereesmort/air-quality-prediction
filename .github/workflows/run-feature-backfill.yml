@@ -1,0 +1,47 @@
+name: Run Feature Backfill
+
+on:
+  workflow_dispatch:  # Allows manual triggering
+  push:
+    branches:
+      - main
+    paths:
+      - '1_feature_backfill.py'
+      - 'pyproject.toml'
+      - 'uv.lock'
+  schedule:
+    # Run daily at 2 AM UTC (optional - uncomment if you want scheduled runs)
+    # - cron: '0 2 * * *'
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run feature backfill script
+        env:
+          # Hopsworks configuration
+          HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
+          
+          # Air Quality API configuration
+          AQICN_API_KEY: ${{ secrets.AQICN_API_KEY }}
+          AQICN_COUNTRY: ${{ vars.AQICN_COUNTRY }}
+          AQICN_CITY: ${{ vars.AQICN_CITY }}
+          AQICN_STREET: ${{ vars.AQICN_STREET }}
+          AQICN_URL: ${{ vars.AQICN_URL }}
+        run: uv run python 1_feature_backfill.py
+
