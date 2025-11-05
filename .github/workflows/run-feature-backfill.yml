@@ -10,6 +10,7 @@ on:
       - 'pyproject.toml'
       - 'uv.lock'
 
+
 jobs:
   run-script:
     runs-on: ubuntu-latest
