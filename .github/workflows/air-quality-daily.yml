@@ -6,7 +6,7 @@ on:
     - cron: '11 6 * * *'
 
 jobs:
-  schedule_pipelines:s
+  schedule_pipelines:
     runs-on: ubuntu-latest
 
     permissions:
