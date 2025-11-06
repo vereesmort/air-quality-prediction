@@ -3,7 +3,7 @@ import hopsworks
 import joblib
 from xgboost import XGBRegressor
 from openai import OpenAI
-from functions.llm_chain import (
+from mlfs.airquality.llm_chain import (
     load_model,
     get_llm_chain,
     generate_response,
