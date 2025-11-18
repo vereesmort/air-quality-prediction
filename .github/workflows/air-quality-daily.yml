@@ -36,7 +36,7 @@ jobs:
           # AQICN_STREET: ${{ vars.AQICN_STREET }}
           # AQICN_URL: ${{ vars.AQICN_URL }}
         run: |
-          jupyter nbconvert --to notebook --execute 3_air_quality_training_pipeline_bulk.ipynb
+          jupyter nbconvert --to notebook --execute 2_air_quality_feature_pipeline_bulk.ipynb
           jupyter nbconvert --to notebook --execute 4_air_quality_batch_inference_bulk.ipynb          
           
 
