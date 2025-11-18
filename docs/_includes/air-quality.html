@@ -1,0 +1,103 @@
+<div id="helsinki-map" style="height: 400px; width: 100%; margin-bottom: 1.5em;"></div>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// Coordinates for the four locations, with marker color for legend
+const locations = [
+  {
+    name: "Kluuvi",
+    coords: [60.1719, 24.9446],
+    color: "red"
+  },
+  {
+    name: "Mannerheimintie",
+    coords: [60.1735, 24.9274],
+    color: "orange"
+  },
+  {
+    name: "Kallio-2",
+    coords: [60.1852, 24.9529],
+    color: "green"
+  },
+  {
+    name: "Vartiokyla Huivipolku",
+    coords: [60.2177, 25.0799],
+    color: "blue"
+  }
+];
+
+// Color name to hex mapping for simple icons
+const colorToHex = {
+  "red": "#e74c3c",
+  "orange": "#f39c12",
+  "green": "#27ae60",
+  "blue": "#2980b9"
+};
+
+// Initialize the map
+var map = L.map('helsinki-map').setView([60.1870, 24.947], 12);
+
+// Add OpenStreetMap tile layer
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+// Function to create a colored SVG pin icon
+function coloredPinIcon(color) {
+  // Use hex color if available, else revert to input color
+  var hex = colorToHex[color] || color;
+  return L.icon({
+    iconUrl: 'data:image/svg+xml;base64,' + btoa(`
+      <svg width="30" height="46" viewBox="0 0 30 46" xmlns="http://www.w3.org/2000/svg">
+        <g>
+          <path d="M15 0
+            C23 0 30 7 30 16
+            C30 28 15 46 15 46
+            C15 46 0 28 0 16
+            C0 7 7 0 15 0Z"
+            fill="${hex}" stroke="#222" stroke-width="2"/>
+          <circle cx="15" cy="16" r="6" fill="#fff" stroke="#333" stroke-width="2"/>
+        </g>
+      </svg>
+    `),
+    iconSize: [30, 46],
+    iconAnchor: [15, 46],
+    popupAnchor: [0, -41]
+  });
+}
+
+// Add pin markers to the map (instead of dots)
+locations.forEach(loc => {
+  L.marker(loc.coords, {
+    icon: coloredPinIcon(loc.color)
+  }).addTo(map)
+    .bindPopup(`<b>${loc.name}</b>`);
+});
+
+// Add map legend
+const legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+  var div = L.DomUtil.create('div', 'info legend');
+  div.innerHTML += '<strong>Forecast Locations</strong><br>';
+  locations.forEach(loc => {
+    // Pin SVG for legend
+    var hex = colorToHex[loc.color] || loc.color;
+    div.innerHTML +=
+      `<span style="vertical-align:middle; margin-right:5px;">
+        <svg width="14" height="22" viewBox="0 0 30 46" style="display:inline-block;vertical-align:middle;">
+          <path d="M15 0
+            C23 0 30 7 30 16
+            C30 28 15 46 15 46
+            C15 46 0 28 0 16
+            C0 7 7 0 15 0Z"
+            fill="${hex}" stroke="#222" stroke-width="2"/>
+        </svg>
+      </span>
+      ${loc.name}<br>`;
+  });
+  return div;
+};
+
+legend.addTo(map);
+</script>
