@@ -85,3 +85,19 @@ The resulting model is able to predict the Air Quality on five areas of the city
 ![enter image description here](https://i.imgur.com/Qm7gJg1.png)
 
 ![enter image description here](https://i.imgur.com/eeeZjYq.png)
+
+
+## Alternative model 
+
+An alternative model for the same purpose is proposed next. This model incorporates official data from the [Finnish meteorological institute](https://en.ilmatieteenlaitos.fi/) both for PM2.5 and weather historical data. 
+
+The motivation for this model is increasing the reliability on the predictions by using more accurate and precise data from creditable sources. The study conducted by [P. Kortoçi et al.](https://doi.org/10.1016/j.smhl.2021.100241) shows a gigantic number of outliers in the readings from low cost sensors as compared to professional ones installed by the Meteorological institute. The next image shows this difference for PM 2.5 measurements in the Pirkkola area of Helsinki where the institute has an AQ station deployed. 
+
+![enter image description here](https://i.imgur.com/hI35dOA.png)
+
+This model expands on the data taken for training and predicting by using hourly reads, this comes useful to those wanting to know when are going to be the peaks in polluted air for a given day.
+The model combines three air quality stations with the weather measurements from the closest weather stations in the metropolitan area of Helsinki. Datasets are built up from collected data since 2015 and provided by the Institute's Open Data API.
+
+The model is able to predict with a **R²** of **0.4892** and a **MSE** of **13.216**
+
+![enter image description here](https://i.imgur.com/KiBbKnk.png)
